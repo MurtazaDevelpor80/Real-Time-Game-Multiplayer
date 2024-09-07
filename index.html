@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiplayer Game</title>
+</head>
+<body>
+    <div id="game">
+        <h1>Multiplayer Game</h1>
+        <button id="findMatch">Find Match</button>
+        <div id="gameArea"></div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io('http://localhost:5000');
+
+        document.getElementById('findMatch').addEventListener('click', () => {
+            const userId = "player1"; // Should be dynamically set after authentication
+            socket.emit('find_match', userId);
+        });
+
+        socket.on('match_found', (data) => {
+            alert('Match found with opponent: ' + data.opponentId);
+            // Initialize game logic here
+        });
+
+        socket.on('game_update', (actionData) => {
+            // Update the game state based on the received action
+            console.log('Game update:', actionData);
+        });
+    </script>
+</body>
+</html>
